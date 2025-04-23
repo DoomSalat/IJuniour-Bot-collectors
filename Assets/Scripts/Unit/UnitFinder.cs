@@ -10,6 +10,7 @@ public class UnitFinder : MonoBehaviour
 	private Transform _currentCollect;
 
 	private bool _isBusy;
+	private TargetAgent _targetAgent = TargetAgent.Stay;
 
 	public bool IsBusy => _isBusy;
 	public Transform HoldCollect => _currentCollect;
@@ -17,11 +18,13 @@ public class UnitFinder : MonoBehaviour
 	private void OnEnable()
 	{
 		_collectDetector.Founded += TakeCollect;
+		_moveAgent.TargetReached += StopBusy;
 	}
 
 	private void OnDisable()
 	{
 		_collectDetector.Founded -= TakeCollect;
+		_moveAgent.TargetReached += StopBusy;
 	}
 
 	private void Update()
@@ -35,6 +38,12 @@ public class UnitFinder : MonoBehaviour
 		}
 	}
 
+	private void OnDestroy()
+	{
+		_moveAgent.TargetReached -= ReachCollect;
+		_moveAgent.TargetReached -= ReachHome;
+	}
+
 	public void Initializate(Transform homeTarget)
 	{
 		_homeTarget = homeTarget;
@@ -42,21 +51,35 @@ public class UnitFinder : MonoBehaviour
 
 	public void SetTarget(Vector3 targetPosition)
 	{
-		if (_isBusy == false)
+		if (_targetAgent == TargetAgent.Stay)
 		{
-			_moveAgent.TargetReached = () =>
-			{
-				if (_currentCollect == null)
-				{
-					_isBusy = false;
-					SetTargetHome();
-				}
-			};
+			_targetAgent = TargetAgent.Item;
+
+			_moveAgent.TargetReached += ReachCollect;
 		}
 
 		_moveAgent.SetSmartTarget(targetPosition);
 
 		_isBusy = true;
+	}
+
+	private void ReachCollect()
+	{
+		_moveAgent.TargetReached -= ReachCollect;
+
+		if (_currentCollect == null)
+		{
+			StopBusy();
+			SetTargetHome();
+		}
+	}
+
+	private void ReachHome()
+	{
+		_moveAgent.TargetReached -= ReachHome;
+
+		_targetAgent = TargetAgent.Stay;
+		StopBusy();
 	}
 
 	private void TakeCollect(ICollectible item)
@@ -77,18 +100,27 @@ public class UnitFinder : MonoBehaviour
 		SetTargetHome();
 	}
 
-	[ContextMenu(nameof(SetTargetHome))]
 	private void SetTargetHome()
 	{
+		_targetAgent = TargetAgent.Home;
+
+		_moveAgent.TargetReached += ReachHome;
 		SetTarget(_homeTarget.position);
 	}
 
 	private void ItemLost()
 	{
-		_isBusy = false;
-		_currentCollect = null;
-		_moveAgent.ResetPath();
+		StopBusy();
 
+		_currentCollect = null;
 		_collectDetector.enabled = true;
+
+		SetTargetHome();
+	}
+
+	private void StopBusy()
+	{
+		_isBusy = false;
+		_moveAgent.ResetPath();
 	}
 }

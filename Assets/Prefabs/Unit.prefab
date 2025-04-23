@@ -719,8 +719,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -736,7 +736,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a88fc2ce4c1a1d448c99969d4f9aa3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _homeTarget: {fileID: 0}
   _holdPoint: {fileID: 1113556323766840331}
   _collectDetector: {fileID: 5970801871567603540}
   _moveAgent: {fileID: 6394065848323165005}
@@ -753,6 +752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSearchMeshDistance: 5
+  _reachDistance: 3
 --- !u!195 &358518993329158896
 NavMeshAgent:
   m_ObjectHideFlags: 0

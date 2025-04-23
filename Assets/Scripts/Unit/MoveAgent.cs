@@ -4,13 +4,13 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class MoveAgent : MonoBehaviour
 {
-	private const float OffsetTarget = 0.01f;
-
 	[SerializeField][Min(0)] private float _maxSearchMeshDistance = 5;
+	[SerializeField][Min(0)] private float _reachDistance = 1.5f;
 
 	private NavMeshAgent _agent;
 
 	private bool _hasTarget;
+	private Vector3 _targetPoint;
 
 	public System.Action TargetReached;
 
@@ -21,8 +21,12 @@ public class MoveAgent : MonoBehaviour
 
 	private void Update()
 	{
-		if (_hasTarget && _agent.pathPending == false && _agent.remainingDistance <= _agent.stoppingDistance &&
-			(_agent.hasPath == false || _agent.velocity.sqrMagnitude == 0f))
+		if (_hasTarget == false || _agent.pathPending)
+			return;
+
+		float distanceToTarget = (_targetPoint - transform.position).sqrMagnitude;
+
+		if (distanceToTarget <= _reachDistance)
 		{
 			_hasTarget = false;
 			TargetReached?.Invoke();
@@ -31,6 +35,7 @@ public class MoveAgent : MonoBehaviour
 
 	public void SetSmartTarget(Vector3 targetPosition)
 	{
+		_targetPoint = targetPosition;
 		_hasTarget = true;
 
 		NavMeshHit hit;
