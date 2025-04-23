@@ -7,6 +7,8 @@ public class TowerAnimator : MonoBehaviour
 
 	private Animator _animator;
 
+	public event System.Action Ready;
+
 	private void Awake()
 	{
 		_animator = GetComponent<Animator>();
@@ -20,5 +22,10 @@ public class TowerAnimator : MonoBehaviour
 	public void ParticleExplose()
 	{
 		_particleExplose.Play();
+	}
+
+	public void ReadyState()
+	{
+		Ready?.Invoke();
 	}
 }

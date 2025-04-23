@@ -61,6 +61,7 @@ public class Spawner : MonoBehaviour
 	private void OnReturnedToPool(PooledObject pooledObject)
 	{
 		pooledObject.gameObject.SetActive(false);
+		pooledObject.transform.SetParent(null);
 	}
 
 	private void OnDestroyPoolObject(PooledObject pooledObject)
