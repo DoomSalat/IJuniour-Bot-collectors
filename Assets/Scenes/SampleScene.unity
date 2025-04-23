@@ -224,6 +224,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4365874326664083121, guid: a9e92b876af8ae34ab7227ea1b185bc6, type: 3}
   m_PrefabInstance: {fileID: 5910144792767567978}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &276655862
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 276655865}
+  - component: {fileID: 276655864}
+  - component: {fileID: 276655863}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &276655863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276655862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f1251cee83e9c43a635f346a9ec4b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: -3266975265021811942, guid: 09f721841bc57de439990fd0be268b74, type: 3}
+  _maxPool: 5
+  _defaultCapacity: 5
+  _spawnTime: 5
+--- !u!65 &276655864
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276655862}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 60, y: 1, z: 60}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &276655865
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276655862}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &303353131
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1887,6 +1957,10 @@ PrefabInstance:
       propertyPath: _score
       value: 
       objectReference: {fileID: 1930251831}
+    - target: {fileID: 3510385473899302538, guid: a9e92b876af8ae34ab7227ea1b185bc6, type: 3}
+      propertyPath: _timeSearch
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4738392711266903791, guid: a9e92b876af8ae34ab7227ea1b185bc6, type: 3}
       propertyPath: m_Name
       value: House
@@ -1909,3 +1983,4 @@ SceneRoots:
   - {fileID: 1467802193}
   - {fileID: 5910144792767567978}
   - {fileID: 4464846747225666719}
+  - {fileID: 276655865}

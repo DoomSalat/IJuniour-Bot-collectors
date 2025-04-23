@@ -10,6 +10,12 @@ public class Tower : MonoBehaviour, IClickable
 	[SerializeField][Min(0)] private float _timeSearch = 1.5f;
 
 	private Coroutine _searchRoutine;
+	private WaitForSeconds _delaySearch;
+
+	private void Awake()
+	{
+		_delaySearch = new WaitForSeconds(_timeSearch);
+	}
 
 	public void Search()
 	{
@@ -25,15 +31,15 @@ public class Tower : MonoBehaviour, IClickable
 	{
 		if (_searchRoutine == null)
 		{
-			StartCoroutine(DelaySearch());
+			_searchRoutine = StartCoroutine(DelaySearch());
 		}
 	}
 
 	private IEnumerator DelaySearch()
 	{
-		yield return new WaitForSeconds(_timeSearch);
-
 		Search();
+
+		yield return _delaySearch;
 
 		_searchRoutine = null;
 	}

@@ -4,11 +4,22 @@ public class InputHandler : MonoBehaviour
 {
 	private MainInputSystem _inputSystem;
 
-	public MainInputSystem InputSystem => _inputSystem;
+	public MainInputSystem InputSystem
+	{
+		get
+		{
+			if (_inputSystem == null)
+			{
+				_inputSystem = new MainInputSystem();
+			}
+
+			return _inputSystem;
+		}
+	}
 
 	private void Awake()
 	{
-		_inputSystem = new MainInputSystem();
+		var system = InputSystem;
 	}
 
 	private void OnEnable()
