@@ -7,9 +7,6 @@ public class CollectDetector : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (enabled == false)
-			return;
-
 		if (other.TryGetComponent<ICollectible>(out var item))
 		{
 			Founded?.Invoke(item);

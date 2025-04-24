@@ -26,13 +26,6 @@ public class Tower : MonoBehaviour, IClickable
 		_animator.Ready += Activate;
 	}
 
-	private void Activate()
-	{
-		_animator.Ready -= Activate;
-
-		_unitsControl.Create(_unitsCreateOnActive);
-	}
-
 	private void OnEnable()
 	{
 		_collectDetector.Founded += TakeCollect;
@@ -43,12 +36,12 @@ public class Tower : MonoBehaviour, IClickable
 		_collectDetector.Founded -= TakeCollect;
 	}
 
-	public void Search()
+	public void Click()
 	{
-		_animator.PlaySearch();
+		StartSearch();
 	}
 
-	public void Click()
+	private void StartSearch()
 	{
 		if (_searchRoutine == null)
 		{
@@ -56,12 +49,26 @@ public class Tower : MonoBehaviour, IClickable
 		}
 	}
 
+	private void Activate()
+	{
+		_animator.Ready -= Activate;
+
+		_unitsControl.Create(_unitsCreateOnActive);
+	}
+
 	private IEnumerator DelaySearch()
 	{
-		Search();
+		_animator.PlaySearch();
 
 		yield return _delaySearch;
 
+		SetUnitsTask();
+
+		_searchRoutine = null;
+	}
+
+	private void SetUnitsTask()
+	{
 		ICollectible[] collectibles = _searcher.GetCollectiblesInRange();
 
 		for (int i = 0; i < collectibles.Length; i++)
@@ -71,8 +78,6 @@ public class Tower : MonoBehaviour, IClickable
 				_unitsControl.SetTarget(collectibles[i].ObjectTransform.position);
 			}
 		}
-
-		_searchRoutine = null;
 	}
 
 	private void TakeCollect(ICollectible item)

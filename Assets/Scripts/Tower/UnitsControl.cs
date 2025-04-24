@@ -48,8 +48,6 @@ public class UnitsControl : MonoBehaviour
 
 	private Vector3 NextSpawnPoint()
 	{
-		_currentSpawnPoint++;
-
-		return _spawnPoints[_currentSpawnPoint].position;
+		return _spawnPoints[++_currentSpawnPoint].position;
 	}
 }

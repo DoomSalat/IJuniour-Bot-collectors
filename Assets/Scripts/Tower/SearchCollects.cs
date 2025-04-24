@@ -3,23 +3,50 @@ using UnityEngine;
 
 public class SearchCollects : MonoBehaviour
 {
-	public float detectionRadius = 100f;
+	[SerializeField] private float _detectionRadius = 100f;
+	private Collider[] _colliderBuffer = new Collider[32];
+	private List<ICollectible> _collectiblesCache = new List<ICollectible>();
+
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.cyan;
+		Gizmos.DrawWireSphere(transform.position, _detectionRadius);
+	}
 
 	public ICollectible[] GetCollectiblesInRange()
 	{
-		Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius);
+		_collectiblesCache.Clear();
 
-		List<ICollectible> collectibles = new List<ICollectible>();
+		int count = Physics.OverlapSphereNonAlloc(
+			transform.position,
+			_detectionRadius,
+			_colliderBuffer
+		);
 
-		foreach (var hit in hits)
+		if (count >= _colliderBuffer.Length)
 		{
-			ICollectible c = hit.GetComponent<ICollectible>();
-			if (c != null)
+			ResizeBuffer(count);
+			count = Physics.OverlapSphereNonAlloc(
+				transform.position,
+				_detectionRadius,
+				_colliderBuffer
+			);
+		}
+
+		for (int i = 0; i < count; i++)
+		{
+			if (_colliderBuffer[i].TryGetComponent<ICollectible>(out var collectible))
 			{
-				collectibles.Add(c);
+				_collectiblesCache.Add(collectible);
 			}
 		}
 
-		return collectibles.ToArray();
+		return _collectiblesCache.ToArray();
+	}
+
+	private void ResizeBuffer(int requiredSize)
+	{
+		int newSize = Mathf.NextPowerOfTwo(requiredSize);
+		_colliderBuffer = new Collider[newSize];
 	}
 }

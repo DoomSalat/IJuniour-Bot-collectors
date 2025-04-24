@@ -87,7 +87,7 @@ public class UnitFinder : MonoBehaviour
 		if (_currentCollect != null || item.IsHold == true)
 			return;
 
-		_collectDetector.enabled = false;
+		_collectDetector.gameObject.SetActive(false);
 
 		Transform takedItem = item.ObjectTransform;
 
@@ -113,7 +113,7 @@ public class UnitFinder : MonoBehaviour
 		StopBusy();
 
 		_currentCollect = null;
-		_collectDetector.enabled = true;
+		_collectDetector.gameObject.SetActive(true);
 
 		SetTargetHome();
 	}

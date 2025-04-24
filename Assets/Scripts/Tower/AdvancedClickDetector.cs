@@ -4,14 +4,17 @@ using UnityEngine.InputSystem;
 public class AdvancedClickDetector : MonoBehaviour
 {
 	[SerializeField] private GameObject _clickableObject;
-	[SerializeField] private InputHandler _inputHandler;
 
 	private Camera _mainCamera;
 	private Collider _objectCollider;
+	private MainInputSystem _inputSystem;
+
 	private IClickable _clickable;
 
 	private void Awake()
 	{
+		_inputSystem = new MainInputSystem();
+
 		_mainCamera = Camera.main;
 		_objectCollider = GetComponent<Collider>();
 		_clickable = _clickableObject.GetComponent<IClickable>();
@@ -19,12 +22,16 @@ public class AdvancedClickDetector : MonoBehaviour
 
 	private void OnEnable()
 	{
-		_inputHandler.InputSystem.UI.Click.performed += OnClick;
+		_inputSystem.UI.Click.performed += OnClick;
+
+		_inputSystem.Enable();
 	}
 
 	private void OnDisable()
 	{
-		_inputHandler.InputSystem.UI.Click.performed -= OnClick;
+		_inputSystem.UI.Click.performed -= OnClick;
+
+		_inputSystem.Disable();
 	}
 
 	private void OnValidate()

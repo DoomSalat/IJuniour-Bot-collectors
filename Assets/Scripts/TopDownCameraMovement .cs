@@ -4,8 +4,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Camera))]
 public class TopDownCameraMovement : MonoBehaviour
 {
-	[SerializeField] private InputHandler _inputHandler;
-
 	[Header("Movement Settings")]
 	[SerializeField] private float _moveSpeed = 10f;
 	[SerializeField] private float _zoomSpeed = 5f;
@@ -20,48 +18,51 @@ public class TopDownCameraMovement : MonoBehaviour
 	private float _rotateInput;
 
 	private Transform _cameraTransform;
+	private MainInputSystem _inputSystem;
 
 	private void Awake()
 	{
+		_inputSystem = new MainInputSystem();
+
 		_cameraTransform = transform;
 	}
 
 	private void OnEnable()
 	{
-		_inputHandler.InputSystem.Player.Move.performed += OnMove;
-		_inputHandler.InputSystem.Player.Move.canceled += OnMoveStop;
+		_inputSystem.Player.Move.performed += OnMove;
+		_inputSystem.Player.Move.canceled += OnMoveStop;
 
-		if (_inputHandler.InputSystem.Player.Rotate != null)
+		if (_inputSystem.Player.Rotate != null)
 		{
-			_inputHandler.InputSystem.Player.Rotate.performed += OnRotate;
-			_inputHandler.InputSystem.Player.Rotate.canceled += OnRotateStop;
+			_inputSystem.Player.Rotate.performed += OnRotate;
+			_inputSystem.Player.Rotate.canceled += OnRotateStop;
 		}
 
-		if (_inputHandler.InputSystem.Player.Zoom != null)
+		if (_inputSystem.Player.Zoom != null)
 		{
-			_inputHandler.InputSystem.Player.Zoom.performed += OnZoom;
+			_inputSystem.Player.Zoom.performed += OnZoom;
 		}
 
-		_inputHandler.InputSystem.Enable();
+		_inputSystem.Enable();
 	}
 
 	private void OnDisable()
 	{
-		_inputHandler.InputSystem.Player.Move.performed -= OnMove;
-		_inputHandler.InputSystem.Player.Move.canceled -= OnMoveStop;
+		_inputSystem.Player.Move.performed -= OnMove;
+		_inputSystem.Player.Move.canceled -= OnMoveStop;
 
-		if (_inputHandler.InputSystem.Player.Rotate != null)
+		if (_inputSystem.Player.Rotate != null)
 		{
-			_inputHandler.InputSystem.Player.Rotate.performed -= OnRotate;
-			_inputHandler.InputSystem.Player.Rotate.canceled -= OnRotateStop;
+			_inputSystem.Player.Rotate.performed -= OnRotate;
+			_inputSystem.Player.Rotate.canceled -= OnRotateStop;
 		}
 
-		if (_inputHandler.InputSystem.Player.Zoom != null)
+		if (_inputSystem.Player.Zoom != null)
 		{
-			_inputHandler.InputSystem.Player.Zoom.performed -= OnZoom;
+			_inputSystem.Player.Zoom.performed -= OnZoom;
 		}
 
-		_inputHandler.InputSystem.Disable();
+		_inputSystem.Disable();
 	}
 
 	private void Update()
