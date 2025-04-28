@@ -9,10 +9,9 @@ public class UnitFinder : MonoBehaviour
 	private Transform _homeTarget;
 	private Transform _currentCollect;
 
-	private bool _isBusy;
 	private TargetAgent _targetAgent = TargetAgent.Stay;
 
-	public bool IsBusy => _isBusy;
+	public TargetAgent CurrentTarget => _targetAgent;
 	public Transform HoldCollect => _currentCollect;
 
 	private void OnEnable()
@@ -59,8 +58,17 @@ public class UnitFinder : MonoBehaviour
 		}
 
 		_moveAgent.SetSmartTarget(targetPosition);
+	}
 
-		_isBusy = true;
+	public void SetTaskBuild()
+	{
+		_targetAgent = TargetAgent.Flag;
+	}
+
+	public void GetBuildUnit(Transform home)
+	{
+		_homeTarget = home;
+		_targetAgent = TargetAgent.Stay;
 	}
 
 	private void ReachCollect()
@@ -120,7 +128,7 @@ public class UnitFinder : MonoBehaviour
 
 	private void StopBusy()
 	{
-		_isBusy = false;
+		_targetAgent = TargetAgent.Stay;
 		_moveAgent.ResetPath();
 	}
 }

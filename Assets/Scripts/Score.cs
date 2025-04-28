@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-	private const int Add = 1;
-
 	private int _score = 0;
 
 	public event System.Action<int> Changed;
@@ -13,9 +11,9 @@ public class Score : MonoBehaviour
 		Changed?.Invoke(_score);
 	}
 
-	public void AddScore()
+	public void SetScore(int value)
 	{
-		_score += Add;
+		_score = value;
 
 		Changed?.Invoke(_score);
 	}

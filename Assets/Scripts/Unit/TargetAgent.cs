@@ -2,5 +2,6 @@ public enum TargetAgent
 {
 	Stay,
 	Item,
-	Home
+	Home,
+	Flag
 }

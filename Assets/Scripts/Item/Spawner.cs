@@ -39,16 +39,12 @@ public class Spawner : MonoBehaviour
 		StartCoroutine(LoopSpawn());
 	}
 
-	private void OnDestroy()
-	{
-		_pool?.Dispose();
-	}
-
 	private PooledObject CreatePooledItem()
 	{
 		PooledObject instance = Instantiate(_prefab);
 		instance.Returned += () => _pool.Release(instance);
 		instance.gameObject.SetActive(false);
+
 		return instance;
 	}
 
