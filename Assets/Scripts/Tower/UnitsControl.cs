@@ -42,47 +42,31 @@ public class UnitsControl : MonoBehaviour
 		}
 	}
 
-	public bool HaveCollect(Transform collect)
+	public void TaskCreateBuild(Flag flag)
 	{
-		foreach (var unit in _units)
-		{
-			if (unit.HoldCollect == collect)
-				return true;
-		}
-
-		return false;
+		StartCoroutine(TargetFreeUnit(flag));
 	}
 
-	public void TaskCreateBuild(Vector3 point)
-	{
-		StartCoroutine(TargetFreeUnit(point));
-	}
-
-	private IEnumerator TargetFreeUnit(Vector3 point)
+	private IEnumerator TargetFreeUnit(Flag flag)
 	{
 		UnitFinder unit = _units[Random.Range(0, _units.Count)];
 
 		yield return new WaitUntil(() => unit.CurrentTarget == TargetAgent.Stay);
 
-		CreateBuild(unit, point);
+		CreateBuild(unit, flag);
 	}
 
-	private void CreateBuild(UnitFinder unit, Vector3 point)
+	private void CreateBuild(UnitFinder unit, Flag flag)
 	{
-		unit.SetTarget(point);
-		unit.SetTaskBuild();
+		unit.SetTarget(flag.transform.position);
+		unit.SetTaskBuild(flag);
 
 		_units.Remove(unit);
 	}
 
 	private Vector3 NextSpawnPoint()
 	{
-		_currentSpawnPoint++;
-
-		if (_currentSpawnPoint >= _spawnPoints.Length)
-		{
-			_currentSpawnPoint = 0;
-		}
+		_currentSpawnPoint = ++_currentSpawnPoint % _spawnPoints.Length;
 
 		return _spawnPoints[_currentSpawnPoint].position;
 	}

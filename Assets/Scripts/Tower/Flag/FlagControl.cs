@@ -15,15 +15,14 @@ public class FlagControl : MonoBehaviour
 
 	private MainInputSystem _inputSystem;
 	private Camera _camera;
-	public Flag _flag;
-	public Transform _flagProjection;
+	private Flag _flag;
+	private Transform _flagProjection;
 	private Vector3 _farPoint = new Vector3(9999, 9999, 9999);
 
 	private bool _isCreated = false;
 	private bool _isActive = false;
 
 	public Flag Flag => _flag;
-	public bool IsCreated => _isCreated;
 	public bool IsActive => _isActive;
 
 	public event System.Action Created;
@@ -74,7 +73,7 @@ public class FlagControl : MonoBehaviour
 
 	public void Activate()
 	{
-		if (_isActive == true || _isCreated)
+		if (_isActive || _isCreated)
 			return;
 
 		_flagProjection.gameObject.SetActive(true);

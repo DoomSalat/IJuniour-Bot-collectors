@@ -5,14 +5,16 @@ public class UnitFinder : MonoBehaviour
 	[SerializeField] private Transform _holdPoint;
 	[SerializeField] private CollectDetector _collectDetector;
 	[SerializeField] private MoveAgent _moveAgent;
+	[Space]
+	[SerializeField][Min(0)] private float _activeFlagDistance = 3;
 
 	private Transform _homeTarget;
 	private Transform _currentCollect;
+	private Flag _flag;
 
 	private TargetAgent _targetAgent = TargetAgent.Stay;
 
 	public TargetAgent CurrentTarget => _targetAgent;
-	public Transform HoldCollect => _currentCollect;
 
 	private void OnEnable()
 	{
@@ -33,6 +35,19 @@ public class UnitFinder : MonoBehaviour
 			if (_currentCollect.parent != _holdPoint)
 			{
 				ItemLost();
+			}
+		}
+
+		if (_flag != null)
+		{
+			float distance = (_flag.transform.position - transform.position).magnitude;
+
+			if (distance < _activeFlagDistance)
+			{
+				_flag.CreateBuild(this);
+				_flag = null;
+
+				StopBusy();
 			}
 		}
 	}
@@ -60,9 +75,10 @@ public class UnitFinder : MonoBehaviour
 		_moveAgent.SetSmartTarget(targetPosition);
 	}
 
-	public void SetTaskBuild()
+	public void SetTaskBuild(Flag flag)
 	{
 		_targetAgent = TargetAgent.Flag;
+		_flag = flag;
 	}
 
 	public void GetBuildUnit(Transform home)

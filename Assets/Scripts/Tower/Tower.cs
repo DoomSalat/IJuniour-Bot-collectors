@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour, IClickable
 {
-	private const int Add = 1;
+	private const int One = 1;
 
 	[SerializeField] private TowerAnimator _animator;
 	[SerializeField] private CollectDetector _collectDetector;
@@ -28,11 +28,8 @@ public class Tower : MonoBehaviour, IClickable
 
 	private int StorageCount
 	{
-		get { return _storageCount; }
-		set
-		{
-			_storageCount = Mathf.Max(0, value);
-		}
+		get => _storageCount;
+		set => _storageCount = Mathf.Max(0, value);
 	}
 
 	private void Awake()
@@ -118,7 +115,7 @@ public class Tower : MonoBehaviour, IClickable
 
 		for (int i = 0; i < collectibles.Length; i++)
 		{
-			if (_unitsControl.HaveCollect(collectibles[i].ObjectTransform) == false)
+			if (collectibles[i].IsHold == false)
 			{
 				_unitsControl.SetTarget(collectibles[i].ObjectTransform.position);
 			}
@@ -132,7 +129,7 @@ public class Tower : MonoBehaviour, IClickable
 
 	private void TakeCollect(ICollectible item)
 	{
-		StorageCount += Add;
+		StorageCount += One;
 
 		if (_isBuild)
 		{
@@ -156,7 +153,7 @@ public class Tower : MonoBehaviour, IClickable
 	private void CreateUnit()
 	{
 		StorageCount -= _valueNewUnit;
-		_unitsControl.Create(Add);
+		_unitsControl.Create(One);
 	}
 
 	private void CreateBuild()
@@ -164,6 +161,6 @@ public class Tower : MonoBehaviour, IClickable
 		_isBuild = false;
 
 		StorageCount -= _valueNewBuild;
-		_unitsControl.TaskCreateBuild(_flagControl.Flag.transform.position);
+		_unitsControl.TaskCreateBuild(_flagControl.Flag);
 	}
 }

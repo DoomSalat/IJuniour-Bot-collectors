@@ -46,7 +46,7 @@ public class MoveAgent : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogWarning("No reachable point near target");
+			ResetPath();
 		}
 	}
 

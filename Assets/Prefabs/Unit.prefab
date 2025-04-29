@@ -739,6 +739,7 @@ MonoBehaviour:
   _holdPoint: {fileID: 1113556323766840331}
   _collectDetector: {fileID: 5970801871567603540}
   _moveAgent: {fileID: 6394065848323165005}
+  _activeFlagDistance: 3
 --- !u!114 &6394065848323165005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -763,7 +764,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 7
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
