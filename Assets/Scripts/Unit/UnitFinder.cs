@@ -44,7 +44,7 @@ public class UnitFinder : MonoBehaviour
 
 			if (distance < _activeFlagDistance)
 			{
-				_flag.CreateBuild(this);
+				_flag.Activate(this);
 				_flag = null;
 
 				StopBusy();
@@ -108,7 +108,7 @@ public class UnitFinder : MonoBehaviour
 
 	private void TakeCollect(ICollectible item)
 	{
-		if (_currentCollect != null || item.IsHold == true)
+		if (_currentCollect != null || item.ObjectTransform.parent != null)
 			return;
 
 		_collectDetector.gameObject.SetActive(false);

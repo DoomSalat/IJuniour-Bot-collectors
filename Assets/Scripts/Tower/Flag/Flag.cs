@@ -2,18 +2,19 @@ using UnityEngine;
 
 public class Flag : MonoBehaviour
 {
-	[SerializeField] private Tower _towerPrefab;
+	private TowerFactory _towerFactory;
 
-	public event System.Action Builded;
+	public event System.Action Activeted;
 
-	public void CreateBuild(UnitFinder unitBuild)
+	public void Initializate()
 	{
-		if (unitBuild.CurrentTarget == TargetAgent.Flag)
-		{
-			Tower tower = Instantiate(_towerPrefab, transform.position, Quaternion.identity);
-			tower.TakeUnit(unitBuild);
+		_towerFactory = FindFirstObjectByType<TowerFactory>();
+	}
 
-			Builded?.Invoke();
-		}
+	public void Activate(UnitFinder unitFinder)
+	{
+		_towerFactory.CreateBuild(unitFinder, transform.position);
+
+		Activeted?.Invoke();
 	}
 }

@@ -119,6 +119,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &15149432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 15149434}
+  - component: {fileID: 15149433}
+  m_Layer: 0
+  m_Name: TowerFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &15149433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15149432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44c3f93b4b2eca4087e7e094cbb4178, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _towerPrefab: {fileID: 3510385473899302538, guid: a9e92b876af8ae34ab7227ea1b185bc6, type: 3}
+--- !u!4 &15149434
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15149432}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &58633677 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6030234271476831506, guid: 8d60a3f00e73bb042b487e9fdc99c42b, type: 3}
@@ -2824,6 +2869,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 953296605773810306, guid: a9e92b876af8ae34ab7227ea1b185bc6, type: 3}
+      propertyPath: _towerFactory
+      value: 
+      objectReference: {fileID: 15149433}
     - target: {fileID: 2578696343123646706, guid: a9e92b876af8ae34ab7227ea1b185bc6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -31.4
@@ -2889,5 +2938,6 @@ SceneRoots:
   - {fileID: 1445338854}
   - {fileID: 1467802193}
   - {fileID: 276655865}
+  - {fileID: 15149434}
   - {fileID: 5910144792767567978}
   - {fileID: 999546256}

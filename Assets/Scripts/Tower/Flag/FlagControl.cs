@@ -37,6 +37,7 @@ public class FlagControl : MonoBehaviour
 	private void Start()
 	{
 		_flag = Instantiate(_flagPrefab);
+		_flag.Initializate();
 		_flag.gameObject.SetActive(false);
 
 		_flagProjection = Instantiate(_flagProjectionPrefab);
@@ -53,7 +54,7 @@ public class FlagControl : MonoBehaviour
 	private void OnDisable()
 	{
 		if (_flag != null)
-			_flag.Builded -= Return;
+			_flag.Activeted -= Return;
 
 		_inputSystem.UI.Click.performed -= Instance;
 
@@ -98,7 +99,7 @@ public class FlagControl : MonoBehaviour
 			_flag.transform.position = point;
 			Created?.Invoke();
 
-			_flag.Builded += Return;
+			_flag.Activeted += Return;
 		}
 	}
 
@@ -111,7 +112,7 @@ public class FlagControl : MonoBehaviour
 
 	private void Return()
 	{
-		_flag.Builded -= Return;
+		_flag.Activeted -= Return;
 		_flag.gameObject.SetActive(false);
 
 		_isActive = false;

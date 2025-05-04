@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour, IClickable
 {
-	private const int One = 1;
+	private const int CollectAmount = 1;
+	private const int CreateUnitAmount = 1;
 
 	[SerializeField] private TowerAnimator _animator;
 	[SerializeField] private CollectDetector _collectDetector;
@@ -37,15 +38,12 @@ public class Tower : MonoBehaviour, IClickable
 		_delaySearch = new WaitForSeconds(_timeSearch);
 	}
 
-	private void Start()
-	{
-		_animator.Ready += Activate;
-	}
-
 	private void OnEnable()
 	{
 		_collectDetector.Founded += TakeCollect;
 		_flagControl.Created += SetTaskBuild;
+
+		_animator.Ready += Activate;
 	}
 
 	private void OnDisable()
@@ -91,8 +89,6 @@ public class Tower : MonoBehaviour, IClickable
 
 	private void Activate()
 	{
-		_animator.Ready -= Activate;
-
 		_unitsControl.Create(_unitsCreateOnActive);
 
 		StartCoroutine(ScanTask());
@@ -100,25 +96,27 @@ public class Tower : MonoBehaviour, IClickable
 
 	private IEnumerator DelaySearch()
 	{
+		ICollectible[] collectibles = _searcher.GetCollectiblesInRange();
+		Vector3[] initialPositions = new Vector3[collectibles.Length];
+
+		for (int i = 0; i < collectibles.Length; i++)
+			initialPositions[i] = collectibles[i].ObjectTransform.position;
+
 		_animator.PlaySearch();
 
 		yield return _delaySearch;
 
-		SetUnitsTask();
+		SetUnitsTask(collectibles, initialPositions);
 
 		_searchRoutine = null;
 	}
 
-	private void SetUnitsTask()
+	private void SetUnitsTask(ICollectible[] collectibles, Vector3[] initialPositions)
 	{
-		ICollectible[] collectibles = _searcher.GetCollectiblesInRange();
-
 		for (int i = 0; i < collectibles.Length; i++)
 		{
-			if (collectibles[i].IsHold == false)
-			{
+			if (collectibles[i].ObjectTransform.position == initialPositions[i])
 				_unitsControl.SetTarget(collectibles[i].ObjectTransform.position);
-			}
 		}
 	}
 
@@ -129,7 +127,7 @@ public class Tower : MonoBehaviour, IClickable
 
 	private void TakeCollect(ICollectible item)
 	{
-		StorageCount += One;
+		StorageCount += CollectAmount;
 
 		if (_isBuild)
 		{
@@ -153,7 +151,7 @@ public class Tower : MonoBehaviour, IClickable
 	private void CreateUnit()
 	{
 		StorageCount -= _valueNewUnit;
-		_unitsControl.Create(One);
+		_unitsControl.Create(CreateUnitAmount);
 	}
 
 	private void CreateBuild()
