@@ -601,7 +601,6 @@ GameObject:
   - component: {fileID: 2578696343123646706}
   - component: {fileID: 3510385473899302538}
   - component: {fileID: 217157623344613401}
-  - component: {fileID: 3060738620503595426}
   - component: {fileID: 7407279508600767028}
   - component: {fileID: 953296605773810306}
   - component: {fileID: 2657963358378367148}
@@ -613,7 +612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2578696343123646706
 Transform:
   m_ObjectHideFlags: 0
@@ -650,6 +649,7 @@ MonoBehaviour:
   _unitsControl: {fileID: 217157623344613401}
   _flagControl: {fileID: 953296605773810306}
   _score: {fileID: 2657963358378367148}
+  _clickDetector: {fileID: 0}
   _timeSearch: 3
   _timerStartScan: 3
   _unitsCreateOnActive: 3
@@ -682,19 +682,6 @@ MonoBehaviour:
   - {fileID: 2475521755985442355}
   - {fileID: 3418410721730205876}
   _homeTransform: {fileID: 2578696343123646706}
---- !u!114 &3060738620503595426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4738392711266903791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bd6b817fb444f247a521783dc959626, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _clickableObject: {fileID: 4738392711266903791}
 --- !u!114 &7407279508600767028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,11 +709,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _flagPrefab: {fileID: 20367508516997564, guid: 9d1bf75a2154e4f449e7913bb68860e8, type: 3}
   _flagProjectionPrefab: {fileID: 8117976573449148671, guid: 01be312d767f2044c85425c525f315e7, type: 3}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 1
-  _maxDistance: 100
-  _isActive: 0
+  _towerFactory: {fileID: 0}
+  _inputReader: {fileID: 0}
+  _raycast: {fileID: 0}
 --- !u!114 &2657963358378367148
 MonoBehaviour:
   m_ObjectHideFlags: 0

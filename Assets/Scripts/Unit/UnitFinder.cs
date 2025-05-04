@@ -12,9 +12,7 @@ public class UnitFinder : MonoBehaviour
 	private Transform _currentCollect;
 	private Flag _flag;
 
-	private TargetAgent _targetAgent = TargetAgent.Stay;
-
-	public TargetAgent CurrentTarget => _targetAgent;
+	public TargetAgent CurrentTarget { get; private set; }
 
 	private void OnEnable()
 	{
@@ -65,9 +63,9 @@ public class UnitFinder : MonoBehaviour
 
 	public void SetTarget(Vector3 targetPosition)
 	{
-		if (_targetAgent == TargetAgent.Stay)
+		if (CurrentTarget == TargetAgent.Stay)
 		{
-			_targetAgent = TargetAgent.Item;
+			CurrentTarget = TargetAgent.Item;
 
 			_moveAgent.TargetReached += ReachCollect;
 		}
@@ -77,14 +75,14 @@ public class UnitFinder : MonoBehaviour
 
 	public void SetTaskBuild(Flag flag)
 	{
-		_targetAgent = TargetAgent.Flag;
+		CurrentTarget = TargetAgent.Flag;
 		_flag = flag;
 	}
 
 	public void GetBuildUnit(Transform home)
 	{
 		_homeTarget = home;
-		_targetAgent = TargetAgent.Stay;
+		CurrentTarget = TargetAgent.Stay;
 	}
 
 	private void ReachCollect()
@@ -102,7 +100,7 @@ public class UnitFinder : MonoBehaviour
 	{
 		_moveAgent.TargetReached -= ReachHome;
 
-		_targetAgent = TargetAgent.Stay;
+		CurrentTarget = TargetAgent.Stay;
 		StopBusy();
 	}
 
@@ -126,7 +124,7 @@ public class UnitFinder : MonoBehaviour
 
 	private void SetTargetHome()
 	{
-		_targetAgent = TargetAgent.Home;
+		CurrentTarget = TargetAgent.Home;
 
 		_moveAgent.TargetReached += ReachHome;
 		SetTarget(_homeTarget.position);
@@ -144,7 +142,7 @@ public class UnitFinder : MonoBehaviour
 
 	private void StopBusy()
 	{
-		_targetAgent = TargetAgent.Stay;
+		CurrentTarget = TargetAgent.Stay;
 		_moveAgent.ResetPath();
 	}
 }

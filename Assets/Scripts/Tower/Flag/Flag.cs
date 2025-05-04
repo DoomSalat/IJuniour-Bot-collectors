@@ -6,9 +6,9 @@ public class Flag : MonoBehaviour
 
 	public event System.Action Activeted;
 
-	public void Initializate()
+	public void Initializate(TowerFactory towerFactory)
 	{
-		_towerFactory = FindFirstObjectByType<TowerFactory>();
+		_towerFactory = towerFactory;
 	}
 
 	public void Activate(UnitFinder unitFinder)

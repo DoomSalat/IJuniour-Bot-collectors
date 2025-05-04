@@ -9,35 +9,28 @@ public class FlagControl : MonoBehaviour
 
 	[SerializeField] private Flag _flagPrefab;
 	[SerializeField] private Transform _flagProjectionPrefab;
+	[SerializeField] private TowerFactory _towerFactory;
 	[Space]
-	[SerializeField] private LayerMask _groundLayer;
-	[SerializeField] private float _maxDistance = 100f;
+	[SerializeField] private InputReader _inputReader;
+	[SerializeField] private RaycastDetector _raycast;
 
-	private MainInputSystem _inputSystem;
-	private Camera _camera;
 	private Flag _flag;
 	private Transform _flagProjection;
-	private Vector3 _farPoint = new Vector3(9999, 9999, 9999);
+	private Vector3 _hidePoint = new Vector3(9999, 9999, 9999);
 
 	private bool _isCreated = false;
 	private bool _isActive = false;
 
 	public Flag Flag => _flag;
+	public TowerFactory TowerFactory => _towerFactory;
 	public bool IsActive => _isActive;
 
 	public event System.Action Created;
 
-	private void Awake()
-	{
-		_inputSystem = new MainInputSystem();
-
-		_camera = Camera.main;
-	}
-
 	private void Start()
 	{
 		_flag = Instantiate(_flagPrefab);
-		_flag.Initializate();
+		_flag.Initializate(_towerFactory);
 		_flag.gameObject.SetActive(false);
 
 		_flagProjection = Instantiate(_flagProjectionPrefab);
@@ -46,9 +39,7 @@ public class FlagControl : MonoBehaviour
 
 	private void OnEnable()
 	{
-		_inputSystem.UI.Click.performed += Instance;
-
-		_inputSystem.Enable();
+		_inputReader.InputActions.UI.Click.performed += Instance;
 	}
 
 	private void OnDisable()
@@ -56,9 +47,7 @@ public class FlagControl : MonoBehaviour
 		if (_flag != null)
 			_flag.Activeted -= Return;
 
-		_inputSystem.UI.Click.performed -= Instance;
-
-		_inputSystem.Disable();
+		_inputReader.InputActions.UI.Click.performed -= Instance;
 	}
 
 	private void Update()
@@ -72,13 +61,20 @@ public class FlagControl : MonoBehaviour
 		}
 	}
 
+	public void Initializate(TowerFactory towerFactory, InputReader inputReader, RaycastDetector raycast)
+	{
+		_towerFactory = towerFactory;
+		_inputReader = inputReader;
+		_raycast = raycast;
+	}
+
 	public void Activate()
 	{
 		if (_isActive || _isCreated)
 			return;
 
 		_flagProjection.gameObject.SetActive(true);
-		_flagProjection.transform.position = _farPoint;
+		_flagProjection.transform.position = _hidePoint;
 
 		StartCoroutine(DelayActive());
 	}
@@ -123,10 +119,7 @@ public class FlagControl : MonoBehaviour
 	{
 		result = Vector3.zero;
 
-		Vector2 mousePosition = Mouse.current.position.ReadValue();
-		Ray ray = _camera.ScreenPointToRay(mousePosition);
-
-		if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, _groundLayer))
+		if (_raycast.TryHitClick(out RaycastHit hit))
 		{
 			if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit, PointArea, NavMesh.AllAreas))
 			{

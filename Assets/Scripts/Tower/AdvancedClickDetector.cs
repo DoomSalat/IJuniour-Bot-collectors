@@ -3,57 +3,25 @@ using UnityEngine.InputSystem;
 
 public class AdvancedClickDetector : MonoBehaviour
 {
-	[SerializeField] private GameObject _clickableObject;
-
-	private Camera _mainCamera;
-	private Collider _objectCollider;
-	private MainInputSystem _inputSystem;
-
-	private IClickable _clickable;
-
-	private void Awake()
-	{
-		_inputSystem = new MainInputSystem();
-
-		_mainCamera = Camera.main;
-		_objectCollider = GetComponent<Collider>();
-		_clickable = _clickableObject.GetComponent<IClickable>();
-	}
+	[SerializeField] private InputReader _inputReader;
+	[SerializeField] private RaycastDetector _raycast;
 
 	private void OnEnable()
 	{
-		_inputSystem.UI.Click.performed += OnClick;
-
-		_inputSystem.Enable();
+		_inputReader.InputActions.UI.Click.performed += OnClick;
 	}
 
 	private void OnDisable()
 	{
-		_inputSystem.UI.Click.performed -= OnClick;
-
-		_inputSystem.Disable();
-	}
-
-	private void OnValidate()
-	{
-		if (_clickableObject != null && _clickableObject.TryGetComponent<IClickable>(out _) == false)
-		{
-			_clickableObject = null;
-		}
+		_inputReader.InputActions.UI.Click.performed -= OnClick;
 	}
 
 	private void OnClick(InputAction.CallbackContext context)
 	{
-		Vector2 mousePosition = Mouse.current.position.ReadValue();
-
-		Ray ray = _mainCamera.ScreenPointToRay(mousePosition);
-
-		if (Physics.Raycast(ray, out RaycastHit hit))
+		if (_raycast.TryHitClick(out RaycastHit hit))
 		{
-			if (hit.collider == _objectCollider)
-			{
-				_clickable.Click();
-			}
+			if (hit.collider.TryGetComponent<IClickable>(out var clickable))
+				clickable.Click();
 		}
 	}
 }

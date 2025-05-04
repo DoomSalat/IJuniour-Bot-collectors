@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class Tower : MonoBehaviour, IClickable
 {
@@ -52,6 +53,11 @@ public class Tower : MonoBehaviour, IClickable
 		_flagControl.Created -= SetTaskBuild;
 
 		_animator.Ready -= Activate;
+	}
+
+	public void Initializate(TowerFactory towerFactory, InputReader inputReader, RaycastDetector raycast)
+	{
+		_flagControl.Initializate(towerFactory, inputReader, raycast);
 	}
 
 	public void Click()
